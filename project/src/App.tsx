@@ -143,50 +143,54 @@ export default function App() {
           type="button"
           onClick={() => setIsMenuOpen((prev) => !prev)}
           aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
           aria-label="Toggle navigation"
           className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-700/70 bg-[#0c1223]/90 text-slate-200 transition hover:border-gold-300 hover:text-gold-300 md:hidden"
         >
-          <span className={`block h-0.5 w-5 rounded-full bg-current transition duration-300 ${isMenuOpen ? 'translate-y-0.5 rotate-45' : '-translate-y-1.5'}`} />
-          <span className={`block h-0.5 w-5 rounded-full bg-current transition duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-          <span className={`block h-0.5 w-5 rounded-full bg-current transition duration-300 ${isMenuOpen ? '-translate-y-0.5 -rotate-45' : 'translate-y-1.5'}`} />
+          <span className={`block h-0.5 w-5 rounded-full bg-current transition-transform duration-300 ${isMenuOpen ? 'translate-y-0.5 rotate-45' : '-translate-y-1.5'}`} />
+          <span className={`block h-0.5 w-5 rounded-full bg-current transition-opacity duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+          <span className={`block h-0.5 w-5 rounded-full bg-current transition-transform duration-300 ${isMenuOpen ? '-translate-y-0.5 -rotate-45' : 'translate-y-1.5'}`} />
         </button>
-        <div className={`fixed inset-0 z-40 md:hidden ${isMenuOpen ? 'visible' : 'pointer-events-none invisible'}`}>
-          <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-xl" onClick={() => setIsMenuOpen(false)} />
-          <div className="relative mx-4 mt-24 overflow-hidden rounded-[2rem] border border-white/10 bg-[#081125]/95 p-6 shadow-2xl">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-[0.45em] text-slate-400">Navigation</p>
-                <p className="mt-1 text-sm font-semibold text-white">Explore the site</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsMenuOpen(false)}
-                className="rounded-full border border-slate-700/70 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-gold-300 hover:text-gold-300"
-              >
-                Close
-              </button>
-            </div>
-            <nav className="mt-8 flex flex-col gap-4 text-lg text-slate-100">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
+
+        {isMenuOpen && (
+          <div className="fixed inset-0 z-40 md:hidden" role="dialog" aria-modal="true">
+            <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-xl" onClick={() => setIsMenuOpen(false)} />
+            <div id="mobile-menu" className="relative mx-4 mt-24 overflow-hidden rounded-[2rem] border border-white/10 bg-[#081125]/95 p-6 shadow-2xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.45em] text-slate-400">Navigation</p>
+                  <p className="mt-1 text-sm font-semibold text-white">Explore the site</p>
+                </div>
+                <button
+                  type="button"
                   onClick={() => setIsMenuOpen(false)}
-                  className="rounded-3xl border border-slate-700/70 bg-white/5 px-5 py-4 transition hover:border-gold-300 hover:text-gold-300"
+                  className="rounded-full border border-slate-700/70 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-gold-300 hover:text-gold-300"
                 >
-                  {link.label}
-                </a>
-              ))}
-            </nav>
-            <a
-              href="#contact"
-              onClick={() => setIsMenuOpen(false)}
-              className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-gold-300 via-fuchsia-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110"
-            >
-              Start a project
-            </a>
+                  Close
+                </button>
+              </div>
+              <nav className="mt-8 flex flex-col gap-4 text-lg text-slate-100">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="rounded-3xl border border-slate-700/70 bg-white/5 px-5 py-4 transition hover:border-gold-300 hover:text-gold-300"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+              <a
+                href="#contact"
+                onClick={() => setIsMenuOpen(false)}
+                className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-gold-300 via-fuchsia-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110"
+              >
+                Start a project
+              </a>
+            </div>
           </div>
-        </div>
+        )}
       </header>
 
       <main className="relative z-10 w-full">
