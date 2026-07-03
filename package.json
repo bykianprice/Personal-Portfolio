@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "npm --prefix project run dev",
     "build": "npm --prefix project run build",
-    "preview": "npm --prefix project run preview"
+    "preview": "npm --prefix project run preview",
+    "deploy": "npm --prefix project run deploy"
   }
 }
