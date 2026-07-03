@@ -5,9 +5,9 @@
   "description": "Portfolio website for Kian Price — a digital artisan crafting bespoke web experiences with React, TypeScript and Tailwind.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fxelysrism/project-bolt-sb1-gumgvxgw.git"
+    "url": "https://github.com/fxelysrism/Personal-Portfolio.git"
   },
-  "homepage": "https://fxelysrism.github.io/project-bolt-sb1-gumgvxgw",
+  "homepage": "https://fxelysrism.github.io/Personal-Portfolio",
   "type": "module",
   "scripts": {
     "dev": "vite",

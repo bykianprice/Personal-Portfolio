@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-const repoName = 'project-bolt-sb1-gumgvxgw';
+const repoName = 'Personal-Portfolio';
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   plugins: [react()],
   base: mode === 'production' ? `/${repoName}/` : '/',
