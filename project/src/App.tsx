@@ -51,15 +51,72 @@ const contactDetails = [
 
 const navLinks = [
   { href: '#about', label: 'About' },
+  { href: '#method', label: 'Method' },
   { href: '#services', label: 'Services' },
   { href: '#projects', label: 'Projects' },
   { href: '#timeline', label: 'Timeline' },
+  { href: '#finals', label: 'Finals' },
   { href: '#contact', label: 'Contact' },
+];
+
+const services = [
+  {
+    eyebrow: 'Positioning',
+    title: 'Offer-first narrative',
+    description: 'I shape your message around what makes your work distinct and make every section earn its place.',
+    tags: ['clarity', 'storytelling', 'trust'],
+  },
+  {
+    eyebrow: 'Experience',
+    title: 'Editorial UI systems',
+    description: 'The interface feels calm, premium, and intentional through layered typography, refined spacing, and subtle motion.',
+    tags: ['visual rhythm', 'motion', 'typography'],
+  },
+  {
+    eyebrow: 'Build',
+    title: 'Launch-ready frontend',
+    description: 'The site is engineered for speed, responsiveness, and easy maintenance so it feels effortless to evolve.',
+    tags: ['React', 'Tailwind', 'performance'],
+  },
+];
+
+const approachPoints = [
+  {
+    title: 'Signal over noise',
+    description: 'Design choices are made with intent so the story feels calm, clear and memorable.',
+  },
+  {
+    title: 'Built to convert',
+    description: 'Every section is shaped to guide attention toward the right next action.',
+  },
+  {
+    title: 'Refined for launch',
+    description: 'The build is lean, responsive and ready for growth without visual compromise.',
+  },
+];
+
+const methodHighlights = [
+  {
+    step: '01',
+    title: 'Listen',
+    description: 'We clarify the story, the audience and the feeling you want the site to create.',
+  },
+  {
+    step: '02',
+    title: 'Shape',
+    description: 'I turn that into a clear structure with strong rhythm, messaging and visual hierarchy.',
+  },
+  {
+    step: '03',
+    title: 'Launch',
+    description: 'The final build is polished, responsive and ready to support your growth.',
+  },
 ];
 
 export default function App() {
   const [progress, setProgress] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const timelineRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -81,6 +138,15 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
         setIsMenuOpen(false);
@@ -89,6 +155,15 @@ export default function App() {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handlePointerMove = (event: MouseEvent) => {
+      setCursorPosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener('pointermove', handlePointerMove);
+    return () => window.removeEventListener('pointermove', handlePointerMove);
   }, []);
 
   useEffect(() => {
@@ -111,55 +186,71 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#070a14] text-slate-100">
-      <header className="sticky top-4 z-30 mx-auto flex w-full max-w-[120rem] items-center justify-between gap-4 rounded-full border border-white/10 bg-[#081125]/90 px-6 py-4 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.55)] backdrop-blur-xl transition-all duration-300 animate-fade-in lg:px-10">
-        <div className="flex items-center gap-4">
-          <span className="flex h-3.5 w-3.5 rounded-full bg-gold-300 shadow-[0_0_20px_rgba(251,191,36,0.4)]" />
-          <div>
-            <a href="#home" className="text-sm font-semibold uppercase tracking-[0.45em] text-white transition hover:text-gold-300">
-              KIAN PRICE
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+        <div className="ambient-glow" style={{ left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px` }} />
+        <div className="ambient-orbit ambient-orbit-one" />
+        <div className="ambient-orbit ambient-orbit-two" />
+      </div>
+
+      <header className="sticky top-4 z-30 mx-auto flex w-full max-w-[120rem] flex-wrap items-center justify-between gap-4 rounded-[2.5rem] border border-white/10 bg-[#081125]/95 px-5 py-4 shadow-[0_35px_90px_-45px_rgba(0,0,0,0.55)] backdrop-blur-xl transition-all duration-300 animate-fade-in md:px-7 lg:px-10">
+        <div className="flex min-w-[16rem] items-center gap-4">
+          <span className="relative flex h-12 w-12 items-center justify-center rounded-3xl border border-white/15 bg-slate-950/80 text-sm font-semibold uppercase tracking-[0.35em] text-gold-300 shadow-[0_0_30px_-10px_rgba(251,191,36,0.3)]">
+            KP
+          </span>
+          <div className="min-w-0">
+            <a href="#home" className="block text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:text-gold-300">
+              Kian Price
             </a>
             <p className="text-[10px] uppercase tracking-[0.45em] text-slate-500">Brand-led web design</p>
           </div>
         </div>
+
         <div className="hidden flex-1 items-center justify-center md:flex">
           <nav className="flex flex-wrap items-center justify-center gap-3 text-sm text-slate-300">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="rounded-full border border-slate-700/70 bg-white/5 px-4 py-2 transition hover:border-gold-300 hover:text-gold-300"
+                className="nav-pill group"
               >
-                {link.label}
+                <span className="relative z-10">{link.label}</span>
               </a>
             ))}
           </nav>
         </div>
+
         <div className="hidden items-center gap-4 md:flex">
-          <a href="#contact" className="rounded-full bg-gradient-to-r from-gold-300 via-fuchsia-500 to-cyan-400 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:brightness-110">
+          <a href="#contact" className="nav-cta inline-flex items-center justify-center rounded-full bg-gradient-to-r from-gold-300 via-fuchsia-500 to-cyan-400 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:brightness-110">
             Start a project
           </a>
         </div>
+
         <button
           type="button"
           onClick={() => setIsMenuOpen((prev) => !prev)}
           aria-expanded={isMenuOpen}
           aria-controls="mobile-menu"
           aria-label="Toggle navigation"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-700/70 bg-[#0c1223]/90 text-slate-200 transition hover:border-gold-300 hover:text-gold-300 md:hidden"
+          className="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-700/70 bg-[#0d1323]/95 text-slate-200 transition hover:border-gold-300 hover:text-gold-300 md:hidden"
         >
-          <span className={`block h-0.5 w-5 rounded-full bg-current transition-transform duration-300 ${isMenuOpen ? 'translate-y-0.5 rotate-45' : '-translate-y-1.5'}`} />
-          <span className={`block h-0.5 w-5 rounded-full bg-current transition-opacity duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-          <span className={`block h-0.5 w-5 rounded-full bg-current transition-transform duration-300 ${isMenuOpen ? '-translate-y-0.5 -rotate-45' : 'translate-y-1.5'}`} />
+          <span
+            className={`relative block h-0.5 w-5 rounded-full bg-current transition duration-300 ${isMenuOpen ? 'translate-y-0.5 opacity-0' : ''}`}
+          />
+          <span
+            className={`relative block h-0.5 w-5 rounded-full bg-current transition duration-300 ${isMenuOpen ? 'rotate-45' : 'mt-2'}`}
+          />
+          <span
+            className={`relative block h-0.5 w-5 rounded-full bg-current transition duration-300 ${isMenuOpen ? '-rotate-45' : 'mt-2'}`}
+          />
         </button>
 
         {isMenuOpen && (
-          <div className="fixed inset-0 z-40 md:hidden" role="dialog" aria-modal="true">
-            <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-xl" onClick={() => setIsMenuOpen(false)} />
-            <div id="mobile-menu" className="relative mx-4 mt-24 overflow-hidden rounded-[2rem] border border-white/10 bg-[#081125]/95 p-6 shadow-2xl">
-              <div className="flex items-center justify-between">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/95 backdrop-blur-xl md:hidden" role="dialog" aria-modal="true">
+            <div className="relative mx-4 w-full max-w-[40rem] overflow-hidden rounded-[2rem] border border-white/10 bg-[#091126]/95 p-6 shadow-2xl">
+              <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-xs uppercase tracking-[0.45em] text-slate-400">Navigation</p>
-                  <p className="mt-1 text-sm font-semibold text-white">Explore the site</p>
+                  <p className="mt-1 text-sm font-semibold text-white">Tap a section</p>
                 </div>
                 <button
                   type="button"
@@ -169,25 +260,28 @@ export default function App() {
                   Close
                 </button>
               </div>
-              <nav className="mt-8 flex flex-col gap-4 text-lg text-slate-100">
+              <nav className="mt-8 grid gap-4 text-lg text-slate-100">
                 {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="rounded-3xl border border-slate-700/70 bg-white/5 px-5 py-4 transition hover:border-gold-300 hover:text-gold-300"
+                    className="rounded-[1.75rem] border border-slate-700/70 bg-[#111227]/95 px-5 py-4 text-center transition hover:border-gold-300 hover:text-gold-300"
                   >
                     {link.label}
                   </a>
                 ))}
               </nav>
-              <a
-                href="#contact"
-                onClick={() => setIsMenuOpen(false)}
-                className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-gold-300 via-fuchsia-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110"
-              >
-                Start a project
-              </a>
+              <div className="mt-8 flex flex-col gap-3">
+                <a
+                  href="#contact"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-gold-300 via-fuchsia-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:brightness-110"
+                >
+                  Start a project
+                </a>
+                <p className="text-center text-sm text-slate-400">Works smoothly on any device, with a bold mobile experience.</p>
+              </div>
             </div>
           </div>
         )}
@@ -201,23 +295,26 @@ export default function App() {
             <span className="hero-dot left-1/2 top-10 bg-gold-300/20" />
             <div className="hero-glow pointer-events-none absolute inset-x-0 top-0 h-full opacity-80" />
           </div>
-          <div className="relative mx-auto grid max-w-[92rem] gap-12 lg:grid-cols-[1.25fr_0.85fr] lg:items-center">
+          <div className="relative mx-auto grid max-w-[92rem] gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div className="space-y-8">
-              <p className="text-sm uppercase tracking-[0.4em] text-gold-300/80">Hi, I’m Kian — I build portfolio websites that feel thoughtful and premium.</p>
+              <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-slate-300">
+                <span className="h-2.5 w-2.5 rounded-full bg-gold-300" />
+                Brand-led digital experiences
+              </div>
               <div className="max-w-4xl space-y-6">
                 <h1 className="text-5xl font-semibold leading-tight text-white sm:text-6xl">
-                  A clean, full-width <span className="bg-gradient-to-r from-gold-300 via-fuchsia-500 to-cyan-400 bg-clip-text text-transparent">timeline</span> for your growth, not a boxed template.
+                  I build <span className="bg-gradient-to-r from-gold-300 via-fuchsia-500 to-cyan-400 bg-clip-text text-transparent">premium websites</span> that feel as considered as the brands behind them.
                 </h1>
                 <p className="text-lg leading-8 text-slate-300">
-                  I design websites for founders and creative teams who want a confident digital presence with premium storytelling, polished motion, and a clearer path to conversion.
+                  From first impression to conversion, I shape thoughtful interfaces that are clean, calm and unmistakably refined for founders, studios and modern service brands.
                 </p>
               </div>
               <div className="flex flex-wrap gap-4">
                 <a href="#timeline" className="inline-flex items-center justify-center rounded-full bg-gold-300 px-8 py-3 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-gold-200">
-                  View timeline
+                  Explore the journey
                 </a>
                 <a href="#contact" className="inline-flex items-center justify-center rounded-full border border-slate-700 px-8 py-3 text-sm font-semibold text-slate-100 transition hover:border-gold-300 hover:text-gold-300">
-                  Let’s talk
+                  Start a conversation
                 </a>
               </div>
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -237,13 +334,14 @@ export default function App() {
                   <p className="mt-3 text-sm text-slate-300">Every page is designed to guide visitors to your next step.</p>
                 </div>
               </div>
-              <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 shadow-[0_30px_80px_-50px_rgba(255,255,255,0.15)] animate-rise-up">
-                <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Featured outcome</p>
-                <p className="mt-3 text-lg font-semibold text-white">A premium landing experience that feels cinematic, polished, and built for conversion.</p>
-              </div>
             </div>
             <div className="relative flex items-center justify-center">
-              <div className="relative w-full max-w-[36rem] overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#111227]/90 p-8 shadow-[0_40px_120px_-60px_rgba(15,23,42,0.8)] animate-float">
+              <div
+                className="glass-panel relative w-full max-w-[36rem] overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#111227]/90 p-8 shadow-[0_40px_120px_-60px_rgba(15,23,42,0.8)] animate-float"
+                style={{
+                  backgroundImage: `radial-gradient(circle at ${cursorPosition.x}px ${cursorPosition.y}px, rgba(255,255,255,0.16), transparent 24%), linear-gradient(135deg, rgba(17,18,39,0.95), rgba(9,16,38,0.9))`,
+                }}
+              >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.14),_transparent_22%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.12),_transparent_28%)]" />
                 <div className="relative space-y-6">
                   <div className="space-y-3">
@@ -274,13 +372,91 @@ export default function App() {
         </section>
 
         <section id="about" data-animate className="reveal-on-scroll w-full bg-[#091026] px-6 py-20 lg:px-10">
-          <div className="mx-auto max-w-[92rem]">
+          <div className="mx-auto max-w-[92rem] grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
             <div className="max-w-3xl">
               <p className="text-sm uppercase tracking-[0.35em] text-gold-300">About</p>
-              <h2 className="mt-4 text-4xl font-semibold text-white">I create portfolio websites that tell a story from start to scroll.</h2>
+              <h2 className="mt-4 text-4xl font-semibold text-white">I create portfolio websites that feel intentional from the first impression to the final click.</h2>
               <p className="mt-6 text-lg leading-8 text-slate-300">
-                Every project begins with your business goals, then shapes content, visuals, and structure into a timeline that guides visitors toward action.
+                Every project begins with your business goals, then shapes content, visuals, and structure into an experience that feels calm, premium and easy to trust.
               </p>
+            </div>
+            <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-8 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.6)]">
+              <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Design philosophy</p>
+              <p className="mt-4 text-2xl font-semibold text-white">Less visual noise, more confidence.</p>
+              <p className="mt-4 text-base leading-7 text-slate-300">
+                I build with restraint and rhythm so your work appears polished, clear and unmistakably premium without feeling overworked.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="approach" data-animate className="reveal-on-scroll w-full bg-[#080e1d] px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-[92rem] rounded-[2.4rem] border border-white/10 bg-[linear-gradient(135deg,rgba(251,191,36,0.14),rgba(9,16,38,0.95),rgba(236,72,153,0.12))] p-8 shadow-[0_30px_90px_-42px_rgba(0,0,0,0.65)] lg:p-10">
+            <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+              <div>
+                <p className="text-sm uppercase tracking-[0.35em] text-gold-300">Approach</p>
+                <h3 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">A method designed for thoughtful brands that want to stand out without shouting.</h3>
+              </div>
+              <div className="grid gap-4">
+                {approachPoints.map((point) => (
+                  <div key={point.title} className="rounded-[1.5rem] border border-white/10 bg-slate-950/50 p-6">
+                    <h4 className="text-xl font-semibold text-white">{point.title}</h4>
+                    <p className="mt-3 text-base leading-7 text-slate-300">{point.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="method" data-animate className="reveal-on-scroll w-full bg-[#080e1d] px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-[92rem] rounded-[2.4rem] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02))] p-8 shadow-[0_30px_90px_-42px_rgba(0,0,0,0.65)] lg:p-10">
+            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+              <div className="max-w-2xl">
+                <p className="text-sm uppercase tracking-[0.35em] text-gold-300">Method</p>
+                <h3 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">A calm, focused process that keeps the work distinctive without becoming overbuilt.</h3>
+                <p className="mt-5 text-lg leading-8 text-slate-300">
+                  I keep each project deliberate and generous in the right places so the final result feels elevated, clear and unmistakably personal.
+                </p>
+                <div className="mt-6 inline-flex rounded-full border border-gold-300/20 bg-gold-300/10 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-gold-300">
+                  Quietly strategic • built to convert
+                </div>
+              </div>
+              <div className="grid gap-4 md:grid-cols-3">
+                {methodHighlights.map((item) => (
+                  <div key={item.step} className="rounded-[1.5rem] border border-white/10 bg-slate-950/55 p-5">
+                    <p className="text-[11px] uppercase tracking-[0.35em] text-slate-400">{item.step}</p>
+                    <h4 className="mt-3 text-xl font-semibold text-white">{item.title}</h4>
+                    <p className="mt-3 text-sm leading-7 text-slate-300">{item.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="finals" data-animate className="reveal-on-scroll w-full bg-[#080e1d] px-6 py-20 lg:px-10">
+          <div className="mx-auto max-w-[92rem] rounded-[2.4rem] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.065),rgba(255,255,255,0.02))] p-8 shadow-[0_30px_90px_-42px_rgba(0,0,0,0.65)] lg:p-10">
+            <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+              <div className="max-w-2xl">
+                <p className="text-sm uppercase tracking-[0.35em] text-gold-300">Finals</p>
+                <h3 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">A refined finish that looks polished at every scroll depth.</h3>
+                <p className="mt-5 text-lg leading-8 text-slate-300">
+                  This site is designed to feel intentional, fast and distinctive without overwhelming the visitor — a strong final chapter for your portfolio.
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/55 p-6">
+                  <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Minimal noise</p>
+                  <p className="mt-3 text-2xl font-semibold text-white">Clear storytelling</p>
+                  <p className="mt-3 text-sm leading-7 text-slate-300">The layout feels premium because it’s deliberate, not crowded.</p>
+                </div>
+                <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/55 p-6">
+                  <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Ready for deploy</p>
+                  <p className="mt-3 text-2xl font-semibold text-white">GitHub Pages</p>
+                  <p className="mt-3 text-sm leading-7 text-slate-300">The project config is prepared for a gh-pages deployment path.</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -289,23 +465,54 @@ export default function App() {
           <div className="mx-auto max-w-[92rem]">
             <div className="mb-12 max-w-3xl">
               <p className="text-sm uppercase tracking-[0.35em] text-gold-300">Services</p>
-              <h2 className="mt-4 text-4xl font-semibold text-white">Strategic design, polished builds, and higher-converting websites.</h2>
+              <h2 className="mt-4 text-4xl font-semibold text-white">A sharper digital presence, designed like a launch campaign.</h2>
             </div>
-            <div className="grid gap-6 md:grid-cols-3">
-              <div className="interactive-card rounded-[2rem] border border-slate-700/70 bg-[#111227]/95 p-8 animate-rise-up">
-                <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Strategy</p>
-                <h3 className="mt-4 text-2xl font-semibold text-white">Offer-led structure</h3>
-                <p className="mt-4 text-slate-300">I turn your story and positioning into an intentional site experience that builds trust and leads visitors toward action.</p>
+            <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+              <div className="service-hero rounded-[2.2rem] border border-slate-700/70 bg-[linear-gradient(135deg,rgba(251,191,36,0.16),rgba(15,23,42,0.95),rgba(236,72,153,0.14))] p-8 shadow-[0_30px_80px_-35px_rgba(0,0,0,0.55)] lg:p-10">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] uppercase tracking-[0.35em] text-slate-200">refined offer</span>
+                  <span className="rounded-full border border-gold-300/20 bg-gold-300/10 px-3 py-1 text-[11px] uppercase tracking-[0.35em] text-gold-300">founder-ready</span>
+                </div>
+                <h3 className="mt-6 text-3xl font-semibold text-white sm:text-4xl">I connect strategy, storytelling and build into one premium experience.</h3>
+                <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-300">
+                  Every service is shaped around one goal: help your audience understand who you are, why you matter, and what to do next.
+                </p>
+                <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/55 p-5">
+                    <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Outcome</p>
+                    <p className="mt-3 text-2xl font-semibold text-white">Clearer positioning</p>
+                    <p className="mt-3 text-sm leading-7 text-slate-300">A sharper message that guides visitors from curiosity to confidence.</p>
+                  </div>
+                  <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/55 p-5">
+                    <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Delivery</p>
+                    <p className="mt-3 text-2xl font-semibold text-white">Fast launch</p>
+                    <p className="mt-3 text-sm leading-7 text-slate-300">Thoughtful builds that ship quickly without losing polish or clarity.</p>
+                  </div>
+                </div>
               </div>
-              <div className="rounded-[2rem] border border-slate-700/70 bg-[#111227]/95 p-8">
-                <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Design</p>
-                <h3 className="mt-4 text-2xl font-semibold text-white">Cohesive UI systems</h3>
-                <p className="mt-4 text-slate-300">Clean visuals, purposeful interactions, and refined typography that feel premium without being overdesigned.</p>
-              </div>
-              <div className="interactive-card rounded-[2rem] border border-slate-700/70 bg-[#111227]/95 p-8">
-                <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Build</p>
-                <h3 className="mt-4 text-2xl font-semibold text-white">Fast, maintainable sites</h3>
-                <p className="mt-4 text-slate-300">Modern frontend tooling with performance-focused code, responsive layouts, and a smooth mobile-first experience.</p>
+
+              <div className="grid gap-6">
+                {services.map((service, index) => (
+                  <article key={service.title} className={`service-card rounded-[1.8rem] border border-slate-700/70 bg-[#111227]/95 p-7 ${index === 1 ? 'lg:translate-x-3' : ''}`}>
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-[11px] uppercase tracking-[0.35em] text-slate-400">{service.eyebrow}</p>
+                        <h3 className="mt-3 text-2xl font-semibold text-white">{service.title}</h3>
+                      </div>
+                      <span className="rounded-full border border-gold-300/20 bg-gold-300/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.35em] text-gold-300">
+                        0{index + 1}
+                      </span>
+                    </div>
+                    <p className="mt-4 text-base leading-7 text-slate-300">{service.description}</p>
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {service.tags.map((tag) => (
+                        <span key={tag} className="rounded-full border border-slate-700/70 bg-slate-950/40 px-3 py-1 text-xs uppercase tracking-[0.25em] text-slate-400">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </article>
+                ))}
               </div>
             </div>
           </div>
@@ -353,7 +560,7 @@ export default function App() {
           <div className="mx-auto max-w-[92rem]">
             <div className="mb-16 max-w-3xl">
               <p className="text-sm uppercase tracking-[0.35em] text-gold-300">timeline</p>
-              <h2 className="mt-4 text-4xl font-semibold text-white">A scrolling story of projects, growth, and modern web design.</h2>
+              <h2 className="mt-4 text-4xl font-semibold text-white">A living story of momentum, craft, and modern web design.</h2>
               <div className="mt-8 h-3 overflow-hidden rounded-full bg-slate-800/80">
                 <div
                   className="progress-bar h-full rounded-full transition-all duration-300"
@@ -361,70 +568,49 @@ export default function App() {
                 />
               </div>
               <p className="mt-3 text-sm text-slate-400">
-                Progress: <span className="font-semibold text-white">{Math.round(progress)}%</span> of the timeline.
+                Progress: <span className="font-semibold text-white">{Math.round(progress)}%</span> through the journey.
               </p>
             </div>
-            <div className="relative">
-              <div className="hidden lg:block absolute left-1/2 top-0 h-full w-px bg-slate-700/50" />
-              <div className="space-y-20">
-                {timelineItems.map((item, index) => {
-                  const isLeft = index % 2 === 0;
-                  return (
-                    <div key={item.title} className="grid gap-6 lg:grid-cols-[1fr_0.5rem_1fr]">
-                      {isLeft ? (
-                        <>
-                          <div className="lg:col-start-1 lg:text-right">
-                            <div className="inline-flex rounded-[2rem] border border-slate-700/70 bg-[#111227]/95 p-8 text-left shadow-[0_30px_80px_-40px_rgba(0,0,0,0.5)]">
-                              <div className="max-w-xl">
-                                <p className="text-xs uppercase tracking-[0.3em] text-gold-300">{item.year}</p>
-                                <h3 className="mt-3 text-3xl font-semibold text-white">{item.title}</h3>
-                                <p className="mt-4 text-lg leading-8 text-slate-300">{item.subtitle}</p>
-                                <p className="mt-4 text-base leading-7 text-slate-400">{item.description}</p>
-                                <p className="mt-6 text-xs uppercase tracking-[0.25em] text-slate-500">{item.detail}</p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="relative col-start-2 flex justify-center">
-                            <span className="timeline-dot absolute top-8 h-4 w-4 rounded-full bg-gold-300 ring-4 ring-[#091026]" />
-                          </div>
-                          <div className="hidden lg:block" />
-                        </>
-                      ) : (
-                        <>
-                          <div className="hidden lg:block" />
-                          <div className="relative col-start-2 flex justify-center">
-                            <span className="timeline-dot absolute top-8 h-4 w-4 rounded-full bg-gold-300 ring-4 ring-[#091026]" />
-                          </div>
-                          <div className="lg:col-start-3">
-                            <div className="inline-flex rounded-[2rem] border border-slate-700/70 bg-[#111227]/95 p-8 shadow-[0_30px_80px_-40px_rgba(0,0,0,0.5)]">
-                              <div className="max-w-xl">
-                                <p className="text-xs uppercase tracking-[0.3em] text-gold-300">{item.year}</p>
-                                <h3 className="mt-3 text-3xl font-semibold text-white">{item.title}</h3>
-                                <p className="mt-4 text-lg leading-8 text-slate-300">{item.subtitle}</p>
-                                <p className="mt-4 text-base leading-7 text-slate-400">{item.description}</p>
-                                <p className="mt-6 text-xs uppercase tracking-[0.25em] text-slate-500">{item.detail}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      )}
+
+            <div className="relative ml-2 border-l border-slate-700/40 pl-6 md:pl-10">
+              {timelineItems.map((item) => (
+                <article key={item.title} className="timeline-item group relative pb-10 md:pb-14">
+                  <span className="timeline-marker" />
+                  <div className="timeline-card rounded-[1.75rem] border border-slate-700/70 bg-[#111227]/95 p-7 shadow-[0_24px_70px_-35px_rgba(0,0,0,0.6)] md:p-8">
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                      <div>
+                        <p className="text-[11px] uppercase tracking-[0.35em] text-gold-300">{item.year}</p>
+                        <h3 className="mt-2 text-2xl font-semibold text-white">{item.title}</h3>
+                      </div>
+                      <span className="rounded-full border border-slate-700/70 bg-slate-950/60 px-3 py-1 text-[11px] uppercase tracking-[0.3em] text-slate-400">
+                        milestone
+                      </span>
                     </div>
-                  );
-                })}
-              </div>
+                    <p className="mt-4 text-lg leading-8 text-slate-300">{item.subtitle}</p>
+                    <p className="mt-4 text-base leading-7 text-slate-400">{item.description}</p>
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {item.detail.split('•').map((tag) => (
+                        <span key={tag} className="rounded-full border border-slate-700/70 bg-slate-950/40 px-3 py-1 text-xs uppercase tracking-[0.25em] text-slate-400">
+                          {tag.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
         <section id="contact" data-animate className="reveal-on-scroll w-full bg-[#091026] px-6 py-20 lg:px-10">
-          <div className="mx-auto max-w-[92rem] grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-            <div className="space-y-6">
+          <div className="mx-auto grid max-w-[92rem] gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div className="rounded-[2.4rem] border border-white/10 bg-[linear-gradient(135deg,rgba(251,191,36,0.14),rgba(17,18,39,0.95))] p-8 shadow-[0_30px_90px_-45px_rgba(0,0,0,0.7)] lg:p-10">
               <p className="text-sm uppercase tracking-[0.35em] text-gold-300">Contact</p>
-              <h2 className="text-4xl font-semibold text-white">Ready to move from a boxed page to a full story?</h2>
-              <p className="max-w-2xl text-lg leading-8 text-slate-300">
-                If you want a website that feels like a confident timeline instead of a stack of cards, I’d love to build it with you.
+              <h2 className="mt-4 text-4xl font-semibold text-white">Ready to move from a boxed page to a full story?</h2>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+                If you want a website that feels like a confident, modern presence instead of a generic template, I’d love to build it with you.
               </p>
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 <div className="interactive-card rounded-[1.75rem] border border-slate-700/70 bg-[#111227]/95 p-5 text-center">
                   <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Trusted by</p>
                   <p className="mt-3 text-3xl font-semibold text-white">12+</p>
